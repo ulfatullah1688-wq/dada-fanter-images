@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#050b16">
+<title>DADA FANTER | Image Gallery</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 0,#12314b 0,#081522 38%,#030711 82%);color:#effaff;font-family:Arial,Helvetica,sans-serif}
+header{padding:30px 16px 22px;text-align:center;border-bottom:1px solid #16445e}.crown{font-size:38px;filter:drop-shadow(0 0 10px #00cfff)}
+h1{font-size:clamp(25px,6vw,38px);letter-spacing:2px;margin:8px 0}.sub{color:#9cc9df;font-size:13px;letter-spacing:2px}
+#status{max-width:1100px;margin:20px auto 14px;padding:0 14px;color:#9cc9df;font-size:14px}
+#gallery{max-width:1100px;margin:0 auto;padding:0 12px 32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px}
+.tile{padding:0;border:1px solid #176080;border-radius:15px;overflow:hidden;background:#071523;box-shadow:0 0 14px #00a8d51c;cursor:pointer;aspect-ratio:1/1}
+.tile img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .2s}.tile:active img{transform:scale(.97)}
+#viewer{position:fixed;inset:0;background:#000e;display:none;align-items:center;justify-content:center;padding:18px;z-index:5}#viewer.open{display:flex}
+#viewer img{max-width:100%;max-height:85vh;object-fit:contain;border-radius:10px}
+#close{position:absolute;top:14px;right:16px;border:1px solid #4bdcff;background:#071523;color:white;border-radius:50%;width:42px;height:42px;font-size:24px}
+.empty{grid-column:1/-1;text-align:center;padding:30px;color:#a9c6d6}footer{text-align:center;color:#64889d;font-size:12px;padding:10px 16px 28px}
+</style>
+</head>
+<body>
+<header><div class="crown">👑</div><h1>DADA FANTER</h1><div class="sub">IMAGE GALLERY</div></header>
+<div id="status">Loading images from GitHub…</div>
+<main id="gallery"></main>
+<footer>Images hosted in the DADA FANTER GitHub repository</footer>
+<div id="viewer" role="dialog" aria-modal="true" aria-label="Image preview"><button id="close" aria-label="Close">×</button><img id="large" alt="Selected image"></div>
+<script>
+const owner="ulfatullah1688-wq",repo="dada-fanter-images",branch="main";
+const statusEl=document.getElementById("status"),gallery=document.getElementById("gallery");
+const imageExt=/\.(avif|bmp|gif|jpe?g|png|svg|webp)$/i;
+async function getImages(path=""){
+ const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+ const response=await fetch(url,{headers:{"Accept":"application/vnd.github+json"}});
+ if(!response.ok)throw new Error(`GitHub returned ${response.status}`);
+ const entries=await response.json(),files=[];
+ for(const entry of entries){
+  if(entry.type==="file"&&imageExt.test(entry.name)&&entry.download_url)files.push({name:entry.name,url:entry.download_url});
+  else if(entry.type==="dir")files.push(...await getImages(entry.path));
+ }
+ return files;
+}
+function showLarge(url){document.getElementById("large").src=url;document.getElementById("viewer").classList.add("open")}
+document.getElementById("close").addEventListener("click",()=>document.getElementById("viewer").classList.remove("open"));
+document.getElementById("viewer").addEventListener("click",e=>{if(e.target.id==="viewer")e.currentTarget.classList.remove("open")});
+(async()=>{try{
+ const images=await getImages();statusEl.textContent=`${images.length} image${images.length===1?"":"s"} found`;
+ if(!images.length){gallery.innerHTML='<div class="empty">No image files found in this repository yet.</div>';return}
+ for(const item of images){
+  const button=document.createElement("button");button.className="tile";button.type="button";button.title=item.name;
+  const img=document.createElement("img");img.loading="lazy";img.alt=item.name;img.src=item.url;
+  button.appendChild(img);button.addEventListener("click",()=>showLarge(item.url));gallery.appendChild(button);
+ }
+}catch(error){statusEl.textContent="Could not load images. Please check that this repository is public and GitHub is available.";
+ gallery.innerHTML='<div class="empty">Images could not be loaded right now. Please refresh this page later.</div>'}
+})();
+</script>
+</body></html>
