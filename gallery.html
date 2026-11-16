@@ -1,231 +1,221 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#050b16">
-<title>DADA FANTER | Media Gallery</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#070b14">
+<title>DADA FANTER - Photo & Video Gallery</title>
 <style>
 *{box-sizing:border-box}
-body{
- margin:0;min-height:100vh;
- background:radial-gradient(circle at 50% 0,#12314b 0,#081522 38%,#030711 82%);
- color:#effaff;font-family:Arial,Helvetica,sans-serif
-}
-header{
- padding:30px 16px 22px;text-align:center;
- border-bottom:1px solid #16445e
-}
-.crown{font-size:38px;filter:drop-shadow(0 0 10px #00cfff)}
-h1{font-size:clamp(25px,6vw,38px);letter-spacing:2px;margin:8px 0}
-.sub{color:#9cc9df;font-size:13px;letter-spacing:2px}
-#status{
- max-width:1100px;margin:20px auto 14px;
- padding:0 14px;color:#9cc9df;font-size:14px
-}
-#gallery{
- max-width:1100px;margin:0 auto;padding:0 12px 32px;
- display:grid;grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:12px
-}
-.tile{
- position:relative;padding:0;border:1px solid #176080;
- border-radius:15px;overflow:hidden;background:#071523;
- box-shadow:0 0 14px #00a8d51c;cursor:pointer;
- aspect-ratio:1/1;color:white
-}
-.tile img,.tile video{
- display:block;width:100%;height:100%;object-fit:cover
-}
-.tile:active{transform:scale(.97)}
-.tile .tag{
- position:absolute;left:7px;top:7px;
- background:#001a2bd9;border:1px solid #00cfff;
- border-radius:20px;padding:4px 8px;
- font-size:10px;color:#a8f3ff
-}
-.tile .play{
- position:absolute;inset:0;display:grid;
- place-items:center;font-size:38px;
- color:white;text-shadow:0 0 12px #00cfff;
- background:#0003;pointer-events:none
-}
-#viewer{
- position:fixed;inset:0;background:#000f;
- display:none;align-items:center;justify-content:center;
- padding:55px 12px 18px;z-index:5
-}
-#viewer.open{display:flex}
-#viewer img{max-width:100%;max-height:85vh;object-fit:contain;border-radius:10px}
-#viewer video{width:100%;max-width:1000px;max-height:85vh;border-radius:10px;background:#000}
-#close{
- position:absolute;top:14px;right:16px;
- border:1px solid #4bdcff;background:#071523;
- color:white;border-radius:50%;width:42px;height:42px;font-size:24px
-}
-.empty{grid-column:1/-1;text-align:center;padding:30px;color:#a9c6d6}
-footer{text-align:center;color:#64889d;font-size:12px;padding:10px 16px 28px}
+body{margin:0;background:#070b14;color:#fff;font-family:Arial,sans-serif}
+header{text-align:center;padding:25px 12px 18px;background:linear-gradient(145deg,#101d32,#070b14);border-bottom:1px solid #00d9ff55}
+.crown{font-size:38px}
+h1{margin:8px 0;color:#00e5ff;font-size:27px;letter-spacing:2px}
+.subtitle{color:#a9c4d8;font-size:13px}
+.toolbar{max-width:900px;margin:18px auto;padding:0 12px}
+input{width:100%;padding:13px;border:1px solid #00d9ff66;border-radius:12px;background:#101a2b;color:white;font-size:15px;outline:none}
+.filters{display:flex;gap:9px;margin-top:12px}
+.filters button{flex:1;padding:11px;border:1px solid #00d9ff66;border-radius:10px;background:#101a2b;color:#bdefff;font-weight:bold}
+.filters button.active{background:#00cce8;color:#001018}
+#count{text-align:center;color:#8faec3;font-size:13px;margin:15px}
+.gallery{max-width:1100px;margin:auto;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card{position:relative;overflow:hidden;border:1px solid #00d9ff55;border-radius:13px;background:#101a2b;box-shadow:0 0 12px #00d9ff12;cursor:pointer;min-width:0}
+.card img{width:100%;height:175px;object-fit:cover;display:block;background:#0c1524}
+.video-thumb{height:175px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(145deg,#142b43,#080d19);color:#00e5ff;font-size:42px}
+.video-thumb small{font-size:12px;color:#c5eaff;margin-top:8px}
+.filename{padding:9px;font-size:11px;color:#b9d8e9;overflow-wrap:anywhere}
+.play{position:absolute;top:65px;left:50%;transform:translateX(-50%);font-size:35px;text-shadow:0 2px 8px #000}
+.status{text-align:center;padding:35px 15px;color:#a9c4d8;grid-column:1/-1}
+#viewer{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:15px}
+#viewer.show{display:flex}
+#viewerContent{width:100%;max-width:950px;max-height:90vh;text-align:center;position:relative}
+#viewerContent img,#viewerContent video{max-width:100%;max-height:78vh;border-radius:12px}
+#close{position:absolute;right:0;top:-42px;border:0;border-radius:50%;width:36px;height:36px;background:#00d9ff;color:#001018;font-size:24px;font-weight:bold}
+#viewerName{color:white;font-size:13px;margin-top:10px;overflow-wrap:anywhere}
+footer{text-align:center;padding:25px;color:#6d91a8;font-size:12px}
+@media(min-width:650px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.card img,.video-thumb{height:220px}}
+@media(min-width:950px){.gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
 </style>
 </head>
 <body>
-
 <header>
- <div class="crown">👑</div>
- <h1>DADA FANTER</h1>
- <div class="sub">PHOTO & VIDEO GALLERY</div>
+  <div class="crown">👑</div>
+  <h1>DADA FANTER</h1>
+  <div class="subtitle">PHOTO & VIDEO GALLERY</div>
 </header>
 
-<div id="status">Loading photos and videos from GitHub...</div>
-<main id="gallery"></main>
-
-<footer>Media hosted in the DADA FANTER GitHub repository</footer>
-
-<div id="viewer" role="dialog" aria-modal="true">
- <button id="close" aria-label="Close">×</button>
- <img id="large" alt="Selected photo" style="display:none">
- <video id="largeVideo" controls playsinline style="display:none"></video>
+<div class="toolbar">
+  <input id="search" type="search" placeholder="Search photos and videos...">
+  <div class="filters">
+    <button class="active" data-filter="all">ALL</button>
+    <button data-filter="image">PHOTOS</button>
+    <button data-filter="video">VIDEOS</button>
+  </div>
 </div>
 
+<div id="count">Loading media...</div>
+<main class="gallery" id="gallery">
+  <div class="status">Loading DADA FANTER media...</div>
+</main>
+
+<div id="viewer">
+  <div id="viewerContent">
+    <button id="close" aria-label="Close">×</button>
+    <div id="mediaView"></div>
+    <div id="viewerName"></div>
+  </div>
+</div>
+
+<footer>👑 DADA FANTER • OFFICIAL MEDIA GALLERY</footer>
+
 <script>
-const owner="ulfatullah1688-wq";
-const repo="dada-fanter-images";
-const branch="main";
+const gallery = document.getElementById("gallery");
+const count = document.getElementById("count");
+const search = document.getElementById("search");
+const viewer = document.getElementById("viewer");
+const mediaView = document.getElementById("mediaView");
+const viewerName = document.getElementById("viewerName");
 
-const statusEl=document.getElementById("status");
-const gallery=document.getElementById("gallery");
-const viewer=document.getElementById("viewer");
-const large=document.getElementById("large");
-const largeVideo=document.getElementById("largeVideo");
+const baseURL = "https://raw.githubusercontent.com/ulfatullah1688-wq/dada-fanter-images/main/";
+let allItems = [];
+let currentFilter = "all";
 
-const mediaExt=/\.(avif|bmp|gif|jpe?g|png|svg|webp|mp4|webm|mov)$/i;
-const videoExt=/\.(mp4|webm|mov)$/i;
-
-async function getMedia(path=""){
- const url=`https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
- const response=await fetch(url,{
-  headers:{"Accept":"application/vnd.github+json"}
- });
-
- if(!response.ok)throw new Error("GitHub returned HTTP "+response.status);
-
- const entries=await response.json();
- const files=[];
-
- for(const entry of entries){
-  if(entry.type==="file"&&mediaExt.test(entry.name)){
-   files.push({
-    name:entry.name,
-    url:entry.download_url ||
-     `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${entry.path}`,
-    video:videoExt.test(entry.name)
-   });
+function mediaURL(name){
+  // Correct a filename extension typo in the manifest, if present.
+  if(name === "Gemini_Generated_Image_fuvccbfuvccbfuvc.jpg"){
+    name = "Gemini_Generated_Image_fuvccbfuvccbfuvc.png";
   }
-  else if(entry.type==="dir"){
-   const nested=await getMedia(entry.path);
-   files.push(...nested);
+  return baseURL + encodeURIComponent(name);
+}
+
+function isVideo(name){
+  return /\.(mp4|webm|ogg|mov)$/i.test(name);
+}
+
+function render(){
+  const term = search.value.trim().toLowerCase();
+  const items = allItems.filter(item => {
+    const matchesType = currentFilter === "all" || item.type === currentFilter;
+    const matchesSearch = item.name.toLowerCase().includes(term);
+    return matchesType && matchesSearch;
+  });
+
+  gallery.innerHTML = "";
+  count.textContent = items.length + " media items";
+
+  if(!items.length){
+    gallery.innerHTML = '<div class="status">No media found.</div>';
+    return;
   }
- }
- return files;
+
+  items.forEach(item => {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    if(item.type === "video"){
+      card.innerHTML =
+        '<div class="video-thumb">▶<small>VIDEO</small></div>' +
+        '<div class="play">▶</div>' +
+        '<div class="filename"></div>';
+    } else {
+      const img = document.createElement("img");
+      img.src = item.url;
+      img.alt = item.name;
+      img.loading = "lazy";
+      img.onerror = () => {
+        img.alt = "Image could not load";
+        img.style.opacity = ".25";
+      };
+      card.appendChild(img);
+      const label = document.createElement("div");
+      label.className = "filename";
+      card.appendChild(label);
+    }
+
+    card.querySelector(".filename").textContent = item.name;
+    card.addEventListener("click", () => openMedia(item));
+    gallery.appendChild(card);
+  });
+}
+
+function openMedia(item){
+  mediaView.innerHTML = "";
+  viewerName.textContent = item.name;
+
+  if(item.type === "video"){
+    const video = document.createElement("video");
+    video.src = item.url;
+    video.controls = true;
+    video.autoplay = true;
+    video.playsInline = true;
+    video.style.maxWidth = "100%";
+    mediaView.appendChild(video);
+  } else {
+    const img = document.createElement("img");
+    img.src = item.url;
+    img.alt = item.name;
+    mediaView.appendChild(img);
+  }
+
+  viewer.classList.add("show");
 }
 
 function closeViewer(){
- largeVideo.pause();
- largeVideo.removeAttribute("src");
- largeVideo.load();
- large.removeAttribute("src");
- large.style.display="none";
- largeVideo.style.display="none";
- viewer.classList.remove("open");
+  const video = mediaView.querySelector("video");
+  if(video) video.pause();
+  mediaView.innerHTML = "";
+  viewer.classList.remove("show");
 }
 
-function showMedia(item){
- viewer.classList.add("open");
-
- if(item.video){
-  large.style.display="none";
-  largeVideo.style.display="block";
-  largeVideo.src=item.url;
-  largeVideo.play().catch(()=>{});
- }else{
-  largeVideo.pause();
-  largeVideo.style.display="none";
-  large.style.display="block";
-  large.src=item.url;
- }
-}
-
-document.getElementById("close").addEventListener("click",closeViewer);
-
-viewer.addEventListener("click",e=>{
- if(e.target===viewer)closeViewer();
+document.getElementById("close").addEventListener("click", closeViewer);
+viewer.addEventListener("click", e => {
+  if(e.target === viewer) closeViewer();
 });
 
-document.addEventListener("keydown",e=>{
- if(e.key==="Escape")closeViewer();
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape") closeViewer();
 });
 
-(async()=>{
- try{
-  const media=await getMedia();
-  const photos=media.filter(x=>!x.video).length;
-  const videos=media.filter(x=>x.video).length;
+search.addEventListener("input", render);
 
-  statusEl.textContent=
-   `${photos} Photos • ${videos} Videos • ${media.length} Total Media`;
-
-  if(!media.length){
-   gallery.innerHTML='<div class="empty">No photos or videos found.</div>';
-   return;
-  }
-
-  media.reverse().forEach(item=>{
-   const button=document.createElement("button");
-   button.className="tile";
-   button.type="button";
-   button.title=item.name;
-
-   if(item.video){
-    const video=document.createElement("video");
-    video.src=item.url;
-    video.muted=true;
-    video.preload="metadata";
-    video.playsInline=true;
-    button.appendChild(video);
-
-    const play=document.createElement("div");
-    play.className="play";
-    play.textContent="▶";
-    button.appendChild(play);
-
-    const tag=document.createElement("span");
-    tag.className="tag";
-    tag.textContent="VIDEO";
-    button.appendChild(tag);
-   }else{
-    const img=document.createElement("img");
-    img.loading="lazy";
-    img.alt=item.name;
-    img.src=item.url;
-    button.appendChild(img);
-
-    const tag=document.createElement("span");
-    tag.className="tag";
-    tag.textContent="PHOTO";
-    button.appendChild(tag);
-   }
-
-   button.addEventListener("click",()=>showMedia(item));
-   gallery.appendChild(button);
+document.querySelectorAll(".filters button").forEach(button => {
+  button.addEventListener("click", () => {
+    document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
+    button.classList.add("active");
+    currentFilter = button.dataset.filter;
+    render();
   });
+});
 
- }catch(error){
-  console.error(error);
-  statusEl.textContent="Could not load GitHub media.";
-  gallery.innerHTML=
-   '<div class="empty">GitHub media could not be loaded. Please refresh later. Error: '+
-   error.message+'</div>';
- }
-})();
+async function loadGallery(){
+  try{
+    const response = await fetch("./media.json", {cache:"no-store"});
+    if(!response.ok) throw new Error("Could not load media.json (" + response.status + ")");
+
+    const names = await response.json();
+    if(!Array.isArray(names)) throw new Error("media.json must contain a JSON list.");
+
+    allItems = names
+      .filter(name => typeof name === "string" && /\.(jpg|jpeg|png|webp|gif|mp4|webm|ogg|mov)$/i.test(name))
+      .map(name => ({
+        name,
+        url: mediaURL(name),
+        type: isVideo(name) ? "video" : "image"
+      }));
+
+    render();
+  }catch(error){
+    count.textContent = "Gallery could not load";
+    gallery.innerHTML = "";
+    const message = document.createElement("div");
+    message.className = "status";
+    message.textContent = "Error: " + error.message + " — Please check media.json and try again.";
+    gallery.appendChild(message);
+  }
+}
+
+loadGallery();
 </script>
 </body>
 </html>
