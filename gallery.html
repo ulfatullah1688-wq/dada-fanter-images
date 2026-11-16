@@ -1,238 +1,361 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#070b14">
+<meta name="theme-color" content="#080d18">
 <title>DADA FANTER Gallery</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#070b14;color:white;font-family:Arial,sans-serif}
-header{text-align:center;padding:24px 10px;background:linear-gradient(145deg,#14243c,#070b14);border-bottom:1px solid #00d9ff66}
+body{
+ margin:0;
+ padding:18px;
+ background:#070b14;
+ color:#fff;
+ font-family:Arial,sans-serif;
+}
+header{
+ text-align:center;
+ padding:22px 10px;
+ border:1px solid #00d9ff;
+ border-radius:18px;
+ background:linear-gradient(135deg,#101c32,#080d18);
+ box-shadow:0 0 18px #00bfff33;
+}
 .crown{font-size:38px}
-h1{color:#00e5ff;letter-spacing:2px;margin:8px}
-.subtitle{color:#a9c4d8;font-size:13px}
-.toolbar{max-width:950px;margin:18px auto;padding:0 12px}
-input{width:100%;padding:13px;border:1px solid #00d9ff66;border-radius:12px;background:#101a2b;color:white;font-size:15px}
-.filters{display:flex;gap:9px;margin-top:12px}
-button{cursor:pointer}
-.filters button{flex:1;padding:11px;border:1px solid #00d9ff66;border-radius:10px;background:#101a2b;color:#bdefff;font-weight:bold}
-.filters button.active{background:#00cce8;color:#001018}
-#editList{display:block;text-align:center;margin:14px auto;padding:12px;background:#075b77;color:white;border-radius:9px;text-decoration:none;font-weight:bold}
-#count{text-align:center;color:#9ab7c9;font-size:13px;margin:15px}
-.gallery{max-width:1100px;margin:auto;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{overflow:hidden;border:1px solid #00d9ff66;border-radius:13px;background:#101a2b;min-width:0}
-.card img{width:100%;height:175px;object-fit:cover;display:block;background:#0c1524;cursor:pointer}
-.video-thumb{height:175px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(145deg,#142b43,#080d19);color:#00e5ff;font-size:42px;cursor:pointer}
-.video-thumb small{font-size:12px;color:#c5eaff;margin-top:8px}
-.filename{padding:10px;font-size:12px;color:#c8eaff;overflow-wrap:anywhere;min-height:42px}
-.actions{display:flex;gap:7px;padding:0 8px 10px}
-.actions a{flex:1;text-align:center;padding:10px 4px;border-radius:8px;font-size:11px;font-weight:bold;text-decoration:none}
-.view{background:#00cce8;color:#001018}
-.delete{background:#b62939;color:white}
-.status{grid-column:1/-1;text-align:center;padding:30px;color:#a9c4d8}
-#viewer{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:15px}
-#viewer.show{display:flex}
-#viewerContent{width:100%;max-width:950px;max-height:90vh;text-align:center;position:relative}
-#viewerContent img,#viewerContent video{max-width:100%;max-height:78vh;border-radius:12px}
-#close{position:absolute;right:0;top:-42px;border:0;border-radius:50%;width:36px;height:36px;background:#00d9ff;color:#001018;font-size:24px}
-#viewerName{font-size:13px;margin-top:10px;overflow-wrap:anywhere}
-footer{text-align:center;padding:25px;color:#6d91a8;font-size:12px}
-@media(min-width:650px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.card img,.video-thumb{height:220px}}
-@media(min-width:950px){.gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
+h1{margin:8px 0;color:#00e5ff;letter-spacing:2px}
+header p{color:#b7c8dc;margin:6px}
+.controls{
+ max-width:850px;
+ margin:20px auto;
+ display:flex;
+ flex-wrap:wrap;
+ gap:10px;
+}
+input{
+ flex:1;
+ min-width:180px;
+ padding:13px;
+ border-radius:10px;
+ border:1px solid #00cfff;
+ background:#101a2b;
+ color:white;
+ outline:none;
+}
+button,.action{
+ border:1px solid #00dfff;
+ background:#10243a;
+ color:#00e5ff;
+ padding:11px 16px;
+ border-radius:10px;
+ font-weight:bold;
+ cursor:pointer;
+ text-decoration:none;
+ display:inline-block;
+}
+button.active{background:#00cfff;color:#00111b}
+#status{text-align:center;color:#9eb4ca;margin:15px}
+.gallery{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:13px;
+ max-width:1100px;
+ margin:auto;
+}
+.card{
+ min-width:0;
+ overflow:hidden;
+ background:#101827;
+ border:1px solid #087eaa;
+ border-radius:14px;
+ box-shadow:0 0 12px #00bfff18;
+}
+.card img,.card video{
+ width:100%;
+ height:170px;
+ object-fit:cover;
+ display:block;
+ background:#05080e;
+}
+.filename{
+ padding:9px 8px;
+ color:#d9f7ff;
+ font-size:12px;
+ overflow-wrap:anywhere;
+ text-align:center;
+}
+.actions{
+ display:flex;
+ gap:7px;
+ padding:0 8px 10px;
+}
+.actions a{flex:1;text-align:center;font-size:12px;padding:10px 5px}
+.delete{
+ background:#35121b;
+ color:#ff8999;
+ border-color:#ff526c;
+}
+.edit-list{
+ display:block;
+ width:max-content;
+ max-width:100%;
+ margin:22px auto;
+ text-align:center;
+}
+.modal{
+ display:none;
+ position:fixed;
+ inset:0;
+ z-index:10;
+ background:#000e;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+}
+.modal.show{display:flex}
+.modal-content{
+ max-width:950px;
+ width:100%;
+ max-height:90vh;
+ text-align:center;
+}
+.modal-content img,.modal-content video{
+ max-width:100%;
+ max-height:78vh;
+ border-radius:12px;
+}
+.close{
+ margin-top:12px;
+ background:#35121b;
+ color:white;
+ border-color:#ff526c;
+}
+@media(max-width:420px){
+ body{padding:10px}
+ .gallery{gap:9px}
+ .card img,.card video{height:135px}
+ .actions a{font-size:11px}
+}
 </style>
 </head>
+
 <body>
+
 <header>
-<div class="crown">👑</div>
-<h1>DADA FANTER</h1>
-<div class="subtitle">PHOTO & VIDEO GALLERY</div>
+ <div class="crown">👑</div>
+ <h1>DADA FANTER</h1>
+ <p>PHOTO & VIDEO GALLERY</p>
 </header>
 
-<div class="toolbar">
-<input id="search" type="search" placeholder="Search photo or video name...">
-<div class="filters">
-<button class="active" data-filter="all">ALL</button>
-<button data-filter="image">PHOTOS</button>
-<button data-filter="video">VIDEOS</button>
+<div class="controls">
+ <input id="search" type="search" placeholder="Search photos or videos...">
+ <button class="active" data-filter="all">ALL</button>
+ <button data-filter="photo">PHOTOS</button>
+ <button data-filter="video">VIDEOS</button>
 </div>
-<a id="editList" href="https://github.com/ulfatullah1688-wq/dada-fanter-images/edit/main/media.json">
-EDIT MEDIA LIST (REMOVE DELETED NAMES)
+
+<div id="status">Loading gallery...</div>
+<div class="gallery" id="gallery"></div>
+
+<a class="action edit-list" href="https://github.com/ulfatullah1688-wq/dada-fanter-images/edit/main/media.json" target="_blank">
+ EDIT MEDIA LIST
 </a>
-</div>
 
-<div id="count">Loading media...</div>
-<main class="gallery" id="gallery">
-<div class="status">Loading gallery...</div>
-</main>
-
-<div id="viewer">
-<div id="viewerContent">
-<button id="close">×</button>
-<div id="mediaView"></div>
-<div id="viewerName"></div>
+<div class="modal" id="modal">
+ <div class="modal-content">
+  <div id="preview"></div>
+  <button class="close" onclick="closePreview()">CLOSE</button>
+ </div>
 </div>
-</div>
-
-<footer>👑 DADA FANTER • OFFICIAL MEDIA GALLERY</footer>
 
 <script>
-const gallery=document.getElementById("gallery");
-const count=document.getElementById("count");
-const search=document.getElementById("search");
-const viewer=document.getElementById("viewer");
-const mediaView=document.getElementById("mediaView");
-const viewerName=document.getElementById("viewerName");
+const MEDIA_BASE =
+"https://raw.githubusercontent.com/ulfatullah1688-wq/dada-fanter-images/main/";
 
-const baseURL="https://raw.githubusercontent.com/ulfatullah1688-wq/dada-fanter-images/main/";
-const repoURL="https://github.com/ulfatullah1688-wq/dada-fanter-images";
-let allItems=[];
+const MEDIA_JSON =
+"https://raw.githubusercontent.com/ulfatullah1688-wq/dada-fanter-images/main/media.json";
+
+const gallery=document.getElementById("gallery");
+const statusBox=document.getElementById("status");
+const search=document.getElementById("search");
+
+let allMedia=[];
 let currentFilter="all";
 
-function isVideo(name){
- return /\.(mp4|webm|ogg|mov)$/i.test(name);
+function getType(filename){
+ return /\.(mp4|webm|mov|m4v|avi)$/i.test(filename)?"video":"photo";
 }
 
-function render(){
- const term=search.value.trim().toLowerCase();
- const items=allItems.filter(item=>
-  (currentFilter==="all"||item.type===currentFilter)&&
-  item.name.toLowerCase().includes(term)
- );
-
- gallery.innerHTML="";
- count.textContent=items.length+" media items";
-
- if(!items.length){
-  gallery.innerHTML='<div class="status">No media found.</div>';
-  return;
- }
-
- items.forEach(item=>{
-  const card=document.createElement("div");
-  card.className="card";
-
-  if(item.type==="video"){
-   const thumb=document.createElement("div");
-   thumb.className="video-thumb";
-   thumb.innerHTML="▶<small>VIDEO</small>";
-   thumb.addEventListener("click",()=>openMedia(item));
-   card.appendChild(thumb);
-  }else{
-   const img=document.createElement("img");
-   img.src=item.url;
-   img.alt=item.name;
-   img.loading="lazy";
-   img.addEventListener("click",()=>openMedia(item));
-   card.appendChild(img);
-  }
-
-  const filename=document.createElement("div");
-  filename.className="filename";
-  filename.textContent=item.name;
-  card.appendChild(filename);
-
-  const actions=document.createElement("div");
-  actions.className="actions";
-
-  const viewBtn=document.createElement("a");
-  viewBtn.href="#";
-  viewBtn.className="view";
-  viewBtn.textContent="VIEW";
-  viewBtn.addEventListener("click",e=>{
-   e.preventDefault();
-   openMedia(item);
-  });
-
-  const deleteBtn=document.createElement("a");
-  deleteBtn.href=repoURL+"/blob/main/"+item.name.split("/").map(encodeURIComponent).join("/");
-  deleteBtn.className="delete";
-  deleteBtn.textContent="DELETE";
-  deleteBtn.addEventListener("click",e=>{
-   if(!confirm("GitHub par is file ka page kholna hai?\n\n"+item.name+"\n\nWahan Delete file aur Commit changes karna hoga.")){
-    e.preventDefault();
-   }
-  });
-
-  actions.append(viewBtn,deleteBtn);
-  card.appendChild(actions);
-  gallery.appendChild(card);
- });
+function mediaUrl(filename){
+ return MEDIA_BASE+encodeURIComponent(filename);
 }
 
-function openMedia(item){
- mediaView.innerHTML="";
- viewerName.textContent=item.name;
+function openPreview(filename,type){
+ const preview=document.getElementById("preview");
+ const url=mediaUrl(filename);
 
- if(item.type==="video"){
+ if(type==="video"){
+  preview.innerHTML="";
   const video=document.createElement("video");
-  video.src=item.url;
+  video.src=url;
   video.controls=true;
   video.autoplay=true;
-  video.playsInline=true;
-  mediaView.appendChild(video);
+  preview.appendChild(video);
  }else{
+  preview.innerHTML="";
   const img=document.createElement("img");
-  img.src=item.url;
-  img.alt=item.name;
-  mediaView.appendChild(img);
+  img.src=url;
+  img.alt=filename;
+  preview.appendChild(img);
  }
- viewer.classList.add("show");
+
+ document.getElementById("modal").classList.add("show");
 }
 
-function closeViewer(){
- const video=mediaView.querySelector("video");
- if(video)video.pause();
- mediaView.innerHTML="";
- viewer.classList.remove("show");
+function closePreview(){
+ document.getElementById("modal").classList.remove("show");
+ document.getElementById("preview").innerHTML="";
 }
 
-document.getElementById("close").addEventListener("click",closeViewer);
-viewer.addEventListener("click",e=>{
- if(e.target===viewer)closeViewer();
+document.getElementById("modal").addEventListener("click",function(e){
+ if(e.target===this)closePreview();
 });
-document.addEventListener("keydown",e=>{
- if(e.key==="Escape")closeViewer();
-});
-search.addEventListener("input",render);
 
-document.querySelectorAll(".filters button").forEach(button=>{
- button.addEventListener("click",()=>{
-  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
-  button.classList.add("active");
-  currentFilter=button.dataset.filter;
-  render();
+function createCard(filename){
+ const type=getType(filename);
+ const url=mediaUrl(filename);
+
+ const card=document.createElement("div");
+ card.className="card";
+
+ let media;
+
+ if(type==="video"){
+  media=document.createElement("video");
+  media.src=url;
+  media.muted=true;
+  media.preload="metadata";
+  media.playsInline=true;
+ }else{
+  media=document.createElement("img");
+  media.src=url;
+  media.loading="lazy";
+  media.alt=filename;
+ }
+
+ media.onerror=()=>{
+  card.style.display="none";
+ };
+
+ card.appendChild(media);
+
+ const name=document.createElement("div");
+ name.className="filename";
+ name.textContent=filename;
+ card.appendChild(name);
+
+ const actions=document.createElement("div");
+ actions.className="actions";
+
+ const view=document.createElement("a");
+ view.className="action";
+ view.href="#";
+ view.textContent="VIEW";
+ view.addEventListener("click",e=>{
+  e.preventDefault();
+  openPreview(filename,type);
  });
-});
+
+ const del=document.createElement("a");
+ del.className="action delete";
+ del.textContent="DELETE";
+
+ const issueTitle="DELETE: "+filename;
+ del.href="https://github.com/ulfatullah1688-wq/dada-fanter-images/issues/new?title="+encodeURIComponent(issueTitle);
+
+ del.addEventListener("click",e=>{
+  if(!confirm("Delete this file?\n\n"+filename+"\n\nGitHub par request submit karni hogi.")){
+   e.preventDefault();
+  }
+ });
+
+ actions.appendChild(view);
+ actions.appendChild(del);
+ card.appendChild(actions);
+
+ return card;
+}
+
+function renderGallery(){
+ gallery.innerHTML="";
+
+ const query=search.value.trim().toLowerCase();
+
+ const filtered=allMedia.filter(filename=>{
+  const type=getType(filename);
+  const matchesType=currentFilter==="all"||currentFilter===type;
+  const matchesSearch=filename.toLowerCase().includes(query);
+  return matchesType&&matchesSearch;
+ });
+
+ filtered.forEach(filename=>{
+  gallery.appendChild(createCard(filename));
+ });
+
+ statusBox.textContent=
+ filtered.length+" media items shown";
+}
 
 async function loadGallery(){
  try{
-  const response=await fetch("./media.json",{cache:"no-store"});
-  if(!response.ok)throw new Error("media.json error: "+response.status);
+  statusBox.textContent="Loading photos and videos...";
 
-  const names=await response.json();
-  if(!Array.isArray(names))throw new Error("Invalid media.json list");
+  const response=await fetch(MEDIA_JSON+"?v="+Date.now(),{
+   cache:"no-store"
+  });
 
-  allItems=names
-   .filter(name=>typeof name==="string"&&/\.(jpg|jpeg|png|webp|gif|mp4|webm|ogg|mov)$/i.test(name))
-   .map(name=>({
-    name,
-    url:baseURL+name.split("/").map(encodeURIComponent).join("/"),
-    type:isVideo(name)?"video":"image"
-   }));
+  if(!response.ok){
+   throw new Error("GitHub returned HTTP "+response.status);
+  }
 
-  render();
+  const data=await response.json();
+
+  if(!Array.isArray(data)){
+   throw new Error("media.json must contain a JSON array");
+  }
+
+  allMedia=data.map(item=>{
+   if(typeof item==="string")return item;
+   if(item&&typeof item==="object")return item.name||item.filename||"";
+   return "";
+  }).filter(Boolean);
+
+  renderGallery();
+
+  if(allMedia.length===0){
+   statusBox.textContent="No media found in media.json";
+  }
+
  }catch(error){
-  count.textContent="Gallery could not load";
-  gallery.innerHTML="";
-  const message=document.createElement("div");
-  message.className="status";
-  message.textContent="Error: "+error.message;
-  gallery.appendChild(message);
+  statusBox.textContent="Could not load GitHub media: "+error.message;
  }
 }
 
+document.querySelectorAll("[data-filter]").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll("[data-filter]").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  currentFilter=button.dataset.filter;
+  renderGallery();
+ });
+});
+
+search.addEventListener("input",renderGallery);
+
 loadGallery();
 </script>
+
 </body>
 </html>
