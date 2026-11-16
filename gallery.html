@@ -5,34 +5,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#070b14">
-<title>DADA FANTER - Photo & Video Gallery</title>
+<title>DADA FANTER Gallery</title>
 <style>
 *{box-sizing:border-box}
-body{margin:0;background:#070b14;color:#fff;font-family:Arial,sans-serif}
-header{text-align:center;padding:25px 12px 18px;background:linear-gradient(145deg,#101d32,#070b14);border-bottom:1px solid #00d9ff55}
+body{margin:0;background:#070b14;color:white;font-family:Arial,sans-serif}
+header{text-align:center;padding:24px 10px;background:linear-gradient(145deg,#14243c,#070b14);border-bottom:1px solid #00d9ff66}
 .crown{font-size:38px}
-h1{margin:8px 0;color:#00e5ff;font-size:27px;letter-spacing:2px}
+h1{color:#00e5ff;letter-spacing:2px;margin:8px}
 .subtitle{color:#a9c4d8;font-size:13px}
-.toolbar{max-width:900px;margin:18px auto;padding:0 12px}
-input{width:100%;padding:13px;border:1px solid #00d9ff66;border-radius:12px;background:#101a2b;color:white;font-size:15px;outline:none}
+.toolbar{max-width:950px;margin:18px auto;padding:0 12px}
+input{width:100%;padding:13px;border:1px solid #00d9ff66;border-radius:12px;background:#101a2b;color:white;font-size:15px}
 .filters{display:flex;gap:9px;margin-top:12px}
 .filters button{flex:1;padding:11px;border:1px solid #00d9ff66;border-radius:10px;background:#101a2b;color:#bdefff;font-weight:bold}
 .filters button.active{background:#00cce8;color:#001018}
-#count{text-align:center;color:#8faec3;font-size:13px;margin:15px}
+#count{text-align:center;color:#9ab7c9;font-size:13px;margin:15px}
 .gallery{max-width:1100px;margin:auto;padding:10px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.card{position:relative;overflow:hidden;border:1px solid #00d9ff55;border-radius:13px;background:#101a2b;box-shadow:0 0 12px #00d9ff12;cursor:pointer;min-width:0}
-.card img{width:100%;height:175px;object-fit:cover;display:block;background:#0c1524}
-.video-thumb{height:175px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(145deg,#142b43,#080d19);color:#00e5ff;font-size:42px}
+.card{overflow:hidden;border:1px solid #00d9ff66;border-radius:13px;background:#101a2b;min-width:0}
+.card img{width:100%;height:175px;object-fit:cover;display:block;background:#0c1524;cursor:pointer}
+.video-thumb{height:175px;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(145deg,#142b43,#080d19);color:#00e5ff;font-size:42px;cursor:pointer}
 .video-thumb small{font-size:12px;color:#c5eaff;margin-top:8px}
-.filename{padding:9px;font-size:11px;color:#b9d8e9;overflow-wrap:anywhere}
-.play{position:absolute;top:65px;left:50%;transform:translateX(-50%);font-size:35px;text-shadow:0 2px 8px #000}
-.status{text-align:center;padding:35px 15px;color:#a9c4d8;grid-column:1/-1}
+.filename{padding:10px;font-size:12px;color:#c8eaff;overflow-wrap:anywhere;min-height:42px}
+.actions{display:flex;gap:7px;padding:0 8px 10px}
+.actions button{flex:1;padding:10px 4px;border:0;border-radius:8px;font-size:11px;font-weight:bold;cursor:pointer}
+.view{background:#00cce8;color:#001018}
+.delete{background:#b62939;color:white}
+.status{grid-column:1/-1;text-align:center;padding:30px;color:#a9c4d8}
 #viewer{display:none;position:fixed;inset:0;background:#000e;z-index:10;align-items:center;justify-content:center;padding:15px}
 #viewer.show{display:flex}
 #viewerContent{width:100%;max-width:950px;max-height:90vh;text-align:center;position:relative}
 #viewerContent img,#viewerContent video{max-width:100%;max-height:78vh;border-radius:12px}
-#close{position:absolute;right:0;top:-42px;border:0;border-radius:50%;width:36px;height:36px;background:#00d9ff;color:#001018;font-size:24px;font-weight:bold}
-#viewerName{color:white;font-size:13px;margin-top:10px;overflow-wrap:anywhere}
+#close{position:absolute;right:0;top:-42px;border:0;border-radius:50%;width:36px;height:36px;background:#00d9ff;color:#001018;font-size:24px}
+#viewerName{font-size:13px;margin-top:10px;overflow-wrap:anywhere}
 footer{text-align:center;padding:25px;color:#6d91a8;font-size:12px}
 @media(min-width:650px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.card img,.video-thumb{height:220px}}
 @media(min-width:950px){.gallery{grid-template-columns:repeat(4,minmax(0,1fr))}}
@@ -40,179 +43,189 @@ footer{text-align:center;padding:25px;color:#6d91a8;font-size:12px}
 </head>
 <body>
 <header>
-  <div class="crown">👑</div>
-  <h1>DADA FANTER</h1>
-  <div class="subtitle">PHOTO & VIDEO GALLERY</div>
+<div class="crown">👑</div>
+<h1>DADA FANTER</h1>
+<div class="subtitle">PHOTO & VIDEO GALLERY</div>
 </header>
 
 <div class="toolbar">
-  <input id="search" type="search" placeholder="Search photos and videos...">
-  <div class="filters">
-    <button class="active" data-filter="all">ALL</button>
-    <button data-filter="image">PHOTOS</button>
-    <button data-filter="video">VIDEOS</button>
-  </div>
+<input id="search" type="search" placeholder="Search by photo or video name...">
+<div class="filters">
+<button class="active" data-filter="all">ALL</button>
+<button data-filter="image">PHOTOS</button>
+<button data-filter="video">VIDEOS</button>
+</div>
 </div>
 
 <div id="count">Loading media...</div>
 <main class="gallery" id="gallery">
-  <div class="status">Loading DADA FANTER media...</div>
+<div class="status">Loading gallery...</div>
 </main>
 
 <div id="viewer">
-  <div id="viewerContent">
-    <button id="close" aria-label="Close">×</button>
-    <div id="mediaView"></div>
-    <div id="viewerName"></div>
-  </div>
+<div id="viewerContent">
+<button id="close">×</button>
+<div id="mediaView"></div>
+<div id="viewerName"></div>
+</div>
 </div>
 
 <footer>👑 DADA FANTER • OFFICIAL MEDIA GALLERY</footer>
 
 <script>
-const gallery = document.getElementById("gallery");
-const count = document.getElementById("count");
-const search = document.getElementById("search");
-const viewer = document.getElementById("viewer");
-const mediaView = document.getElementById("mediaView");
-const viewerName = document.getElementById("viewerName");
+const gallery=document.getElementById("gallery");
+const count=document.getElementById("count");
+const search=document.getElementById("search");
+const viewer=document.getElementById("viewer");
+const mediaView=document.getElementById("mediaView");
+const viewerName=document.getElementById("viewerName");
 
-const baseURL = "https://raw.githubusercontent.com/ulfatullah1688-wq/dada-fanter-images/main/";
-let allItems = [];
-let currentFilter = "all";
-
-function mediaURL(name){
-  // Correct a filename extension typo in the manifest, if present.
-  if(name === "Gemini_Generated_Image_fuvccbfuvccbfuvc.jpg"){
-    name = "Gemini_Generated_Image_fuvccbfuvccbfuvc.png";
-  }
-  return baseURL + encodeURIComponent(name);
-}
+const baseURL="https://raw.githubusercontent.com/ulfatullah1688-wq/dada-fanter-images/main/";
+const repoURL="https://github.com/ulfatullah1688-wq/dada-fanter-images";
+let allItems=[];
+let currentFilter="all";
 
 function isVideo(name){
-  return /\.(mp4|webm|ogg|mov)$/i.test(name);
+ return /\.(mp4|webm|ogg|mov)$/i.test(name);
 }
 
 function render(){
-  const term = search.value.trim().toLowerCase();
-  const items = allItems.filter(item => {
-    const matchesType = currentFilter === "all" || item.type === currentFilter;
-    const matchesSearch = item.name.toLowerCase().includes(term);
-    return matchesType && matchesSearch;
-  });
+ const term=search.value.trim().toLowerCase();
+ const items=allItems.filter(item=>
+  (currentFilter==="all"||item.type===currentFilter)&&
+  item.name.toLowerCase().includes(term)
+ );
 
-  gallery.innerHTML = "";
-  count.textContent = items.length + " media items";
+ gallery.innerHTML="";
+ count.textContent=items.length+" media items";
 
-  if(!items.length){
-    gallery.innerHTML = '<div class="status">No media found.</div>';
-    return;
+ if(!items.length){
+  gallery.innerHTML='<div class="status">No media found.</div>';
+  return;
+ }
+
+ items.forEach(item=>{
+  const card=document.createElement("div");
+  card.className="card";
+
+  if(item.type==="video"){
+   const thumb=document.createElement("div");
+   thumb.className="video-thumb";
+   thumb.innerHTML="▶<small>VIDEO</small>";
+   thumb.addEventListener("click",()=>openMedia(item));
+   card.appendChild(thumb);
+  }else{
+   const img=document.createElement("img");
+   img.src=item.url;
+   img.alt=item.name;
+   img.loading="lazy";
+   img.addEventListener("click",()=>openMedia(item));
+   card.appendChild(img);
   }
 
-  items.forEach(item => {
-    const card = document.createElement("div");
-    card.className = "card";
+  const filename=document.createElement("div");
+  filename.className="filename";
+  filename.textContent=item.name;
+  card.appendChild(filename);
 
-    if(item.type === "video"){
-      card.innerHTML =
-        '<div class="video-thumb">▶<small>VIDEO</small></div>' +
-        '<div class="play">▶</div>' +
-        '<div class="filename"></div>';
-    } else {
-      const img = document.createElement("img");
-      img.src = item.url;
-      img.alt = item.name;
-      img.loading = "lazy";
-      img.onerror = () => {
-        img.alt = "Image could not load";
-        img.style.opacity = ".25";
-      };
-      card.appendChild(img);
-      const label = document.createElement("div");
-      label.className = "filename";
-      card.appendChild(label);
-    }
+  const actions=document.createElement("div");
+  actions.className="actions";
 
-    card.querySelector(".filename").textContent = item.name;
-    card.addEventListener("click", () => openMedia(item));
-    gallery.appendChild(card);
+  const viewBtn=document.createElement("button");
+  viewBtn.className="view";
+  viewBtn.textContent="VIEW";
+  viewBtn.addEventListener("click",()=>openMedia(item));
+
+  const deleteBtn=document.createElement("button");
+  deleteBtn.className="delete";
+  deleteBtn.textContent="DELETE";
+  deleteBtn.addEventListener("click",()=>{
+   const confirmed=confirm(
+    "GitHub par is file ka page kholna hai?\n\n"+item.name+
+    "\n\nWahan aap Delete file karke confirm kar sakenge."
+   );
+   if(confirmed){
+    const url=repoURL+"/blob/main/"+item.name.split("/").map(encodeURIComponent).join("/");
+    window.open(url,"_blank");
+   }
   });
+
+  actions.append(viewBtn,deleteBtn);
+  card.appendChild(actions);
+  gallery.appendChild(card);
+ });
 }
 
 function openMedia(item){
-  mediaView.innerHTML = "";
-  viewerName.textContent = item.name;
+ mediaView.innerHTML="";
+ viewerName.textContent=item.name;
 
-  if(item.type === "video"){
-    const video = document.createElement("video");
-    video.src = item.url;
-    video.controls = true;
-    video.autoplay = true;
-    video.playsInline = true;
-    video.style.maxWidth = "100%";
-    mediaView.appendChild(video);
-  } else {
-    const img = document.createElement("img");
-    img.src = item.url;
-    img.alt = item.name;
-    mediaView.appendChild(img);
-  }
-
-  viewer.classList.add("show");
+ if(item.type==="video"){
+  const video=document.createElement("video");
+  video.src=item.url;
+  video.controls=true;
+  video.autoplay=true;
+  video.playsInline=true;
+  mediaView.appendChild(video);
+ }else{
+  const img=document.createElement("img");
+  img.src=item.url;
+  img.alt=item.name;
+  mediaView.appendChild(img);
+ }
+ viewer.classList.add("show");
 }
 
 function closeViewer(){
-  const video = mediaView.querySelector("video");
-  if(video) video.pause();
-  mediaView.innerHTML = "";
-  viewer.classList.remove("show");
+ const video=mediaView.querySelector("video");
+ if(video)video.pause();
+ mediaView.innerHTML="";
+ viewer.classList.remove("show");
 }
 
-document.getElementById("close").addEventListener("click", closeViewer);
-viewer.addEventListener("click", e => {
-  if(e.target === viewer) closeViewer();
+document.getElementById("close").addEventListener("click",closeViewer);
+viewer.addEventListener("click",e=>{
+ if(e.target===viewer)closeViewer();
 });
-
-document.addEventListener("keydown", e => {
-  if(e.key === "Escape") closeViewer();
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape")closeViewer();
 });
+search.addEventListener("input",render);
 
-search.addEventListener("input", render);
-
-document.querySelectorAll(".filters button").forEach(button => {
-  button.addEventListener("click", () => {
-    document.querySelectorAll(".filters button").forEach(b => b.classList.remove("active"));
-    button.classList.add("active");
-    currentFilter = button.dataset.filter;
-    render();
-  });
+document.querySelectorAll(".filters button").forEach(button=>{
+ button.addEventListener("click",()=>{
+  document.querySelectorAll(".filters button").forEach(b=>b.classList.remove("active"));
+  button.classList.add("active");
+  currentFilter=button.dataset.filter;
+  render();
+ });
 });
 
 async function loadGallery(){
-  try{
-    const response = await fetch("./media.json", {cache:"no-store"});
-    if(!response.ok) throw new Error("Could not load media.json (" + response.status + ")");
+ try{
+  const response=await fetch("./media.json",{cache:"no-store"});
+  if(!response.ok)throw new Error("media.json load error: "+response.status);
 
-    const names = await response.json();
-    if(!Array.isArray(names)) throw new Error("media.json must contain a JSON list.");
+  const names=await response.json();
+  if(!Array.isArray(names))throw new Error("media.json must be a list");
 
-    allItems = names
-      .filter(name => typeof name === "string" && /\.(jpg|jpeg|png|webp|gif|mp4|webm|ogg|mov)$/i.test(name))
-      .map(name => ({
-        name,
-        url: mediaURL(name),
-        type: isVideo(name) ? "video" : "image"
-      }));
+  allItems=names
+   .filter(name=>typeof name==="string"&&/\.(jpg|jpeg|png|webp|gif|mp4|webm|ogg|mov)$/i.test(name))
+   .map(name=>({
+    name,
+    url:baseURL+name.split("/").map(encodeURIComponent).join("/"),
+    type:isVideo(name)?"video":"image"
+   }));
 
-    render();
-  }catch(error){
-    count.textContent = "Gallery could not load";
-    gallery.innerHTML = "";
-    const message = document.createElement("div");
-    message.className = "status";
-    message.textContent = "Error: " + error.message + " — Please check media.json and try again.";
-    gallery.appendChild(message);
-  }
+  render();
+ }catch(error){
+  count.textContent="Gallery could not load";
+  gallery.innerHTML="";
+  const message=document.createElement("div");
+  message.className="status";
+  message.textContent="Error: "+error.message;
+  gallery.appendChild(message);
+ }
 }
 
 loadGallery();
