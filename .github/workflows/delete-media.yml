@@ -1,0 +1,82 @@
+
+name: Delete Media Automatically
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  delete-media:
+    if: github.event.issue.user.login == 'ulfatullah1688-wq'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Delete media and update media.json
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+
+          const title = process.env.ISSUE_TITLE || '';
+          const prefix = 'DELETE: ';
+          if (!title.startsWith(prefix)) {
+            console.log('Invalid delete request');
+            process.exit(1);
+          }
+
+          const filename = title.slice(prefix.length).trim();
+
+          if (
+            !filename ||
+            filename !== require('path').basename(filename) ||
+            !/\.(jpg|jpeg|png|webp|gif|mp4|webm|mov)$/i.test(filename)
+          ) {
+            console.log('Invalid media filename');
+            process.exit(1);
+          }
+
+          const listPath = 'media.json';
+          if (!fs.existsSync(listPath)) {
+            throw new Error('media.json not found');
+          }
+
+          const list = JSON.parse(fs.readFileSync(listPath, 'utf8'));
+          if (!Array.isArray(list)) {
+            throw new Error('media.json must contain an array');
+          }
+
+          const updated = list.filter(item => item !== filename);
+          const mediaExists = fs.existsSync(filename);
+
+          if (!mediaExists && updated.length === list.length) {
+            throw new Error('Media file not found in repository or list');
+          }
+
+          if (mediaExists) fs.unlinkSync(filename);
+          fs.writeFileSync(listPath, JSON.stringify(updated, null, 2) + '\n');
+
+          console.log('Deleted:', filename);
+          NODE
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --cached --quiet || git commit -m "Delete media and update media list"
+          git push
+
+      - name: Close request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: gh issue close "$ISSUE_NUMBER" --comment "Media deleted and media.json updated."
+        
